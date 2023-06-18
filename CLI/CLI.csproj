@@ -16,4 +16,14 @@
       <PackageReference Include="VkNet" Version="1.74.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="..\bot_config.json">
+        <Link>bot_config.json</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\users.json">
+        <Link>users.json</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

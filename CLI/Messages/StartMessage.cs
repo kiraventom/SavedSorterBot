@@ -8,9 +8,13 @@ public class StartMessage : UserMessage
     {
     }
 
-    public async override Task Respond(ILogger logger, VkManager vkManager, TelegramController telegramController)
+    protected override async Task RespondInternal(ILogger logger, VkManager vkManager, TelegramController telegramController)
     {
-        const string message = "При помощи этого бота можно отсортировать альбом \"Сохраненные фотографии\" по альбомам";
-        await telegramController.SendText(Sender.SenderId, message);
+        var greeting = "При помощи этого бота можно отсортировать альбом \"Сохраненные фотографии\" по альбомам.\n".EscapeMarkdown() +
+                                $"Для продолжения нажмите кнопку \"{KeyboardBuilder.StartAuth}\"".EscapeMarkdown();
+                                
+        // await telegramController.SendTextAsync(Sender.SenderId, greeting, keyboardBuilder.Build(KeyboardBuilder.StartAuth));
+        await telegramController.SendTextAsync(Sender.SenderId, greeting);
+        Sender.State = State.WaitingStartAuth;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CLI;
 
@@ -51,7 +50,7 @@ public class BotUser
 
     private void SetAndRaise<T>(ref T field, T value)
     {
-        if (field.Equals(value))
+        if (Equals(field, value))
             return;
 
         field = value;
@@ -61,12 +60,6 @@ public class BotUser
 
 public class UserDatabase
 {
-    private static readonly JsonSerializerOptions Options = new()
-    {
-        WriteIndented = true,
-        AllowTrailingCommas = true
-    };
-
     private readonly string _filename;
     private readonly Dictionary<long, BotUser> _users;
 
@@ -105,12 +98,12 @@ public class UserDatabase
     private static Dictionary<long, BotUser> ReadFromFile(string filename)
     {
         using var file = File.OpenRead(filename);
-        return JsonSerializer.Deserialize<Dictionary<long, BotUser>>(file, Options);
+        return JsonSerializer.Deserialize<Dictionary<long, BotUser>>(file, BotUtils.DefaultJsonOptions);
     }
 
     private static void WriteToFile(string filename, Dictionary<long, BotUser> users)
     {
         using var file = File.Create(filename);
-        JsonSerializer.Serialize(file, users, Options);
+        JsonSerializer.Serialize(file, users, BotUtils.DefaultJsonOptions);
     }
 }
